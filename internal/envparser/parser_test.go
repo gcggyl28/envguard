@@ -70,3 +70,14 @@ KEY=val
 		t.Errorf("expected 1 entry, got %d", len(env))
 	}
 }
+
+func TestParse_EmptyValue(t *testing.T) {
+	input := `KEY=`
+	env, err := envparser.Parse(strings.NewReader(input))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if env["KEY"] != "" {
+		t.Errorf("expected empty value for KEY, got %q", env["KEY"])
+	}
+}
