@@ -62,6 +62,17 @@ envguard --schema .env.schema --env .env --strict
 | `--env`    | Path to the `.env` file to validate      | `.env`       |
 | `--strict` | Fail on undeclared keys                  | `false`      |
 | `--quiet`  | Suppress output, exit code only          | `false`      |
+| `--json`   | Output results as JSON                   | `false`      |
+
+---
+
+## Exit Codes
+
+| Code | Meaning                              |
+|------|--------------------------------------|
+| `0`  | All checks passed                    |
+| `1`  | One or more validation errors found  |
+| `2`  | Invalid flags or missing schema file |
 
 ---
 
