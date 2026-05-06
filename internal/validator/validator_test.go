@@ -84,3 +84,25 @@ func TestValidate_OptionalFieldAbsent(t *testing.T) {
 		t.Error("expected report to be valid when optional field is absent")
 	}
 }
+
+func TestValidate_OptionalFieldInvalidValue(t *testing.T) {
+	// An optional field that is present must still satisfy allowed values.
+	env := map[string]string{
+		"APP_ENV":   "production",
+		"PORT":      "4000",
+		"LOG_LEVEL": "verbose",
+	}
+	report := validator.Validate(env, baseSchema())
+	if report.Valid {
+		t.Fatal("expected report to be invalid when optional field has disallowed value")
+	}
+	found := false
+	for _, r := range report.Results {
+		if r.Key == "LOG_LEVEL" && !r.Passed {
+			found = true
+		}
+	}
+	if !found {
+		t.Error("expected failure for LOG_LEVEL")
+	}
+}
