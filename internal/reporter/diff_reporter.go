@@ -48,6 +48,16 @@ func FprintDiff(w io.Writer, d differ.DiffResult, labelA, labelB string) {
 	fmt.Fprintf(w, "\nSummary: %s\n", differ.Summary(d, labelA, labelB))
 }
 
+// PrintDiffStats writes only the numeric counts of differences to the given
+// writer, useful for machine-readable or terse output modes.
+func PrintDiffStats(w io.Writer, d differ.DiffResult, labelA, labelB string) {
+	fmt.Fprintf(w, "only_in_%s=%d only_in_%s=%d differing=%d\n",
+		labelA, len(d.OnlyInA),
+		labelB, len(d.OnlyInB),
+		len(d.DiffValues),
+	)
+}
+
 func sortedKeys(m map[string][2]string) []string {
 	keys := make([]string, 0, len(m))
 	for k := range m {
