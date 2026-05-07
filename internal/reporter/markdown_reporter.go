@@ -45,11 +45,16 @@ func FprintMarkdown(w io.Writer, findings []validator.Finding, notes []auditor.N
 	}
 
 	total := len(findings) + len(notes)
-	status := "✅ All checks passed"
-	if len(findings) > 0 {
-		status = fmt.Sprintf("❌ %d finding(s) require attention", len(findings))
-	}
+	status := summaryStatus(len(findings))
 	fmt.Fprintf(w, "## Summary\n\n")
 	fmt.Fprintf(w, "- **Status:** %s\n", status)
 	fmt.Fprintf(w, "- **Total issues:** %d\n", total)
+}
+
+// summaryStatus returns a human-readable status string based on the number of findings.
+func summaryStatus(findingCount int) string {
+	if findingCount == 0 {
+		return "✅ All checks passed"
+	}
+	return fmt.Sprintf("❌ %d finding(s) require attention", findingCount)
 }
