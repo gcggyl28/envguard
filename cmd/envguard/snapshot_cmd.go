@@ -10,6 +10,10 @@ import (
 	"github.com/user/envguard/internal/snapshotter"
 )
 
+// runSnapshot handles the "snapshot" subcommand. It supports two modes:
+//   - --save: parses the given .env file and writes a snapshot to disk.
+//   - --compare: loads an existing snapshot and diffs it against the current .env file,
+//     exiting with a non-zero status if any differences are found.
 func runSnapshot(args []string) {
 	fs := flag.NewFlagSet("snapshot", flag.ExitOnError)
 	save := fs.String("save", "", "Save a new snapshot to this file")
