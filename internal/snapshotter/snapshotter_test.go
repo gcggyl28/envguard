@@ -85,3 +85,26 @@ func TestCompare_NoChanges(t *testing.T) {
 		t.Errorf("expected no changes, got added=%v removed=%v changed=%v", added, removed, changed)
 	}
 }
+
+func TestCompare_EmptySnapshots(t *testing.T) {
+	base := &snapshotter.Snapshot{Env: map[string]string{}}
+	current := &snapshotter.Snapshot{Env: map[string]string{}}
+
+	added, removed, changed := snapshotter.Compare(base, current)
+	if len(added)+len(removed)+len(changed) != 0 {
+		t.Errorf("expected no changes for empty snapshots, got added=%v removed=%v changed=%v", added, removed, changed)
+	}
+}
+
+func TestCompare_AllAdded(t *testing.T) {
+	base := &snapshotter.Snapshot{Env: map[string]string{}}
+	current := &snapshotter.Snapshot{Env: map[string]string{"NEW": "value"}}
+
+	added, removed, changed := snapshotter.Compare(base, current)
+	if len(added) != 1 || added[0] != "NEW" {
+		t.Errorf("expected added=[NEW], got %v", added)
+	}
+	if len(removed) != 0 || len(changed) != 0 {
+		t.Errorf("expected no removed or changed, got removed=%v changed=%v", removed, changed)
+	}
+}
