@@ -71,3 +71,15 @@ func TestFprintComparator_Header(t *testing.T) {
 		t.Errorf("expected labels in header, got: %s", out)
 	}
 }
+
+func TestFprintComparator_NoChanges_DoesNotPrintSections(t *testing.T) {
+	r := makeResult(nil, nil, nil)
+	var buf bytes.Buffer
+	FprintComparator(&buf, r, "a", "b")
+	out := buf.String()
+	for _, section := range []string{"Added", "Removed", "Changed"} {
+		if strings.Contains(out, section) {
+			t.Errorf("expected no %q section when there are no changes, got: %s", section, out)
+		}
+	}
+}
