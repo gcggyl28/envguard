@@ -15,6 +15,11 @@ func PrintTransform(result transformer.Result) {
 }
 
 // FprintTransform writes a human-readable transformation summary to w.
+// Changes are sorted alphabetically by key (or OldKey for renames) for
+// deterministic output. Each line is prefixed with the change type:
+//   - [rename+value]: the key was renamed and its value was also changed
+//   - [rename]:       only the key name changed
+//   - [value]:        only the value changed
 func FprintTransform(w io.Writer, result transformer.Result) {
 	changes := result.Changes
 
